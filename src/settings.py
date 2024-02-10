@@ -18,3 +18,5 @@ BASE_URL = os.environ.get("BASE_URL")
 IS_PROD_ENV = env == "prod"
 IS_LOCAL_ENV = env == "local"
 IS_DEV_ENV = env == "dev"
+
+ES_URI = os.environ.get("ES_URI", "docdb:9200")
