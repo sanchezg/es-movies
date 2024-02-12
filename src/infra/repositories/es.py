@@ -3,23 +3,21 @@ from typing import Any, Optional
 from src import settings
 from src.domain.interfaces import AbstractRepo
 
+from elasticsearch.helpers import async_bulk
+
 
 class ESRepo(AbstractRepo):
     def __init__(self, client) -> None:
         self.es = client
         super().__init__()
 
-    async def get(self, **kwargs) -> Optional[Any]:
+    async def get(self, index, body, **kwargs) -> Optional[Any]:
         documents = await self.es.search(
-            index=self.index_name,  # type: ignore
-            body={"query": {"match_all": {}}},
-            size=20,
+            index=index,
+            body=body,
+            size=settings.ES_MAX_SIZE,
         )
         return documents
 
-    async def insert(self, **kwargs) -> None:
-        # document = await self.es.bulk(
-            
-        # )
-        # return document
-        pass
+    async def insert(self, actions: list[dict], **kwargs) -> tuple[int, int | list[Any]]:
+        return await async_bulk(self.es, actions, chunk_size=settings.ES_CHUNK_SIZE)

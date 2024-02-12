@@ -20,3 +20,5 @@ IS_LOCAL_ENV = env == "local"
 IS_DEV_ENV = env == "dev"
 
 ES_URI = os.environ.get("ES_URI", "docdb:9200")
+ES_CHUNK_SIZE = int(os.environ.get("ES_CHUNK_SIZE", 10000))  # keep it high because docs are lightweight
+ES_MAX_SIZE = int(os.environ.get("ES_MAX_SIZE", 1000))  # keep it high because docs are lightweight
