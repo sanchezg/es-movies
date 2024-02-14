@@ -1,14 +1,13 @@
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, HTTPException, Request, responses, status
+from fastapi import APIRouter, Depends, Request, responses, status
 from fastapi.templating import Jinja2Templates
 
-# from src import settings
 from src.container import Container
 from src.domain.model import Movie, MovieQuery
+from src.domain.repository import MovieRepo
 from logging import getLogger
 
 from src.domain.services import MoviesFetcher
-# from src.domain.services.movies import MoviesLookup, MoviesFetcher
 
 router = APIRouter()
 templates = Jinja2Templates(directory="src/application/templates")
@@ -41,9 +40,10 @@ async def get_url(
 async def post_url(
     data: MovieQuery | None = None,
     movies_fetcher: MoviesFetcher = Depends(Provide[Container.movies_fetcher]),
-    # movies_store: MoviesStore = Depends(Provide[Container.movies_store]),
+    movies_store: MovieRepo = Depends(Provide[Container.movies_repo]),
 ):
     title = data.title if data else None
     result = await movies_fetcher(title=title)
-    # await movies_store.save(result)
+    count = await movies_store.insert(documents=result)
+    logger.debug(f"Inserted {count} documents")
     return responses.JSONResponse(content=result, status_code=status.HTTP_200_OK)

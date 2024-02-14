@@ -1,12 +1,9 @@
 from dependency_injector import containers, providers
 
-import asyncio
 from elasticsearch import AsyncElasticsearch
 
 from src import settings
 from src.domain.services import MoviesFetcher
-# from src.domain.services.movies import 
-from src.infra.repositories.es import ESRepo
 from src.infra.repositories.movies import ESMovieRepo
 
 
@@ -21,7 +18,7 @@ class Container(containers.DeclarativeContainer):
     )
 
     # Repositories
-    url_repo = providers.Factory(ESMovieRepo, es_client)
+    movies_repo = providers.Factory(ESMovieRepo, es_client)
 
     # Services
     movies_fetcher = providers.Factory(MoviesFetcher)

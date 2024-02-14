@@ -6,9 +6,9 @@ T = TypeVar("T")
 
 class AbstractRepo(abc.ABC, Generic[T]):
     @abc.abstractmethod
-    def get(self, **kwargs) -> Optional[T]:
+    async def get(self, **kwargs) -> Optional[T]:
         pass
 
     @abc.abstractmethod
-    def insert(self, **kwargs) -> None:
+    async def insert(self, **kwargs) -> None:
         pass

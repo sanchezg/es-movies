@@ -22,14 +22,15 @@ class ESMovieRepo(ESRepo, MovieRepo):
                 for doc in docs
             ]
 
-    async def insert(self, **kwargs) -> None:
+    async def insert(self, **kwargs) -> int | None:
         actions = [
             {
                 "_index": self.index_name,  # type: ignore
-                "doc": dataclasses.asdict(doc)
+                "_source": doc
             }
             for doc in kwargs.get("documents", [])
         ]
         success, errors = await super().insert(actions=actions)
         if errors:
             raise Exception(f"Failed to insert: {errors}")
+        return success
