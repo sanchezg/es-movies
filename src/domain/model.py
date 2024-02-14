@@ -12,5 +12,5 @@ class Movie:
 @dataclass()
 class MovieQuery:
     title: str
-    year: int
-    page: int = 1
+    year: int | None = None
+    page: int | None = 1

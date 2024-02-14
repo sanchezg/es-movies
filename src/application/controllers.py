@@ -2,17 +2,18 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, HTTPException, Request, responses, status
 from fastapi.templating import Jinja2Templates
 
-from src import settings
+# from src import settings
 from src.container import Container
 from src.domain.model import Movie, MovieQuery
 from logging import getLogger
+
+from src.domain.services import MoviesFetcher
 # from src.domain.services.movies import MoviesLookup, MoviesFetcher
 
 router = APIRouter()
 templates = Jinja2Templates(directory="src/application/templates")
 
-
-logger = getLogger()
+logger = getLogger("default")
 
 @router.get("/", response_class=responses.HTMLResponse)
 @inject
@@ -38,11 +39,11 @@ async def get_url(
 @router.post("/movies/fetcher/", response_model=Movie)
 @inject
 async def post_url(
-    data: MovieQuery | str | None,
-    # movies_fetcher: MoviesFetcher = Depends(Provide[Container.movies_fetcher]),
+    data: MovieQuery | None = None,
+    movies_fetcher: MoviesFetcher = Depends(Provide[Container.movies_fetcher]),
     # movies_store: MoviesStore = Depends(Provide[Container.movies_store]),
 ):
-    logger.debug(f"data: {data}")
-    # result = await movies_fetcher(data=data)
+    title = data.title if data else None
+    result = await movies_fetcher(title=title)
     # await movies_store.save(result)
-    return responses.Response("ok", status_code=status.HTTP_200_OK)
+    return responses.JSONResponse(content=result, status_code=status.HTTP_200_OK)

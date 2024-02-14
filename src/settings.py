@@ -22,3 +22,26 @@ IS_DEV_ENV = env == "dev"
 ES_URI = os.environ.get("ES_URI", "docdb:9200")
 ES_CHUNK_SIZE = int(os.environ.get("ES_CHUNK_SIZE", 10000))  # keep it high because docs are lightweight
 ES_MAX_SIZE = int(os.environ.get("ES_MAX_SIZE", 1000))  # keep it high because docs are lightweight
+
+LOGGING_CONFIG = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "default": {
+            "()": "uvicorn.logging.DefaultFormatter",
+            "fmt": "%(levelprefix)s %(asctime)s %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+
+        },
+    },
+    "handlers": {
+        "default": {
+            "formatter": "default",
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stderr",
+        },
+    },
+    "loggers": {
+        "default": {"handlers": ["default"], "level": "DEBUG"},
+    },
+}
