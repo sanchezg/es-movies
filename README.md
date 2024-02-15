@@ -13,11 +13,16 @@ Since this app was implemented using Docker, the best way to run it is with `doc
 `$ docker-compose -f docker/docker-compose.yml build`
 `$ docker-compose -f docker/docker-compose.yml up`
 
-There are a few environment variables that can be set using an `.env.local` file, but I recommend keeping they with default values (unless you want to deploy this in a different environment):
+There are a few environment variables that can be set using an `.env.local` file, but I recommend keeping them with default values (unless you want to deploy this in a different environment):
 
 ```
+# The URI to connect to ES cluster
 ES_URI
+
+# The number of documents to insert per chunk to ES
 ES_CHUNK_SIZE
+
+# The number of documents to return per search
 ES_MAX_SIZE
 ```
 
