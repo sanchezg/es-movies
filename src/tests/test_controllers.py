@@ -26,8 +26,13 @@ def test_get_movies_not_found(test_client):
     assert response.text == "No results"
 
 
+def test_get_movies_without_arguments_422(test_client):
+    response = test_client.get("/movies/")
+    assert response.status_code == 422
+
+
 def test_post_movies_fetcher(test_client):
-    response = test_client.post("/movies/fetcher", json={"title": "The Matrix"})
+    response = test_client.post("/movies/fetcher", json={"title": "matrix"})
     assert response.status_code == 200
     assert response.json() == [
         {
@@ -46,3 +51,9 @@ def test_post_movies_fetcher(test_client):
             "imdbid": "tt0242653",
         },
     ]
+
+
+def test_post_movies_fetcher_without_arguments(test_client):
+    response = test_client.post("/movies/fetcher")
+    assert response.status_code == 200
+    assert len(response.json()) == 6

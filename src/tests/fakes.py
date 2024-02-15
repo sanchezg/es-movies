@@ -32,8 +32,8 @@ class MockESMovieRepo(ESMovieRepo):
 
 
 class MockMoviesFetcher:
-    async def __call__(self, *args, title: str | None = None, **kwargs) -> list[dict]:
-        return [
+    def __init__(self) -> None:
+        self._documents = [
             {
                 "title": "The Matrix",
                 "year": 1999,
@@ -49,5 +49,22 @@ class MockMoviesFetcher:
                 "year": 2003,
                 "imdbid": "tt0242653",
             },
+            {
+                "title": "The Lord of the Rings",
+                "year": 2001,
+                "imdbid": "tt0120737",
+            },
+            {
+                "title": "The Lord of the Rings: The Two Towers",
+                "year": 2002,
+                "imdbid": "tt0167261",
+            },
+            {
+                "title": "The Lord of the Rings: The Return of the King",
+                "year": 2003,
+                "imdbid": "tt0167260",
+            },
         ]
 
+    async def __call__(self, *args, title: str | None = None, **kwargs) -> list[dict]:
+        return self._documents[:3] if title and "matrix" in title else self._documents
