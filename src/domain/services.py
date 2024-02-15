@@ -63,7 +63,7 @@ class MoviesFetcher(BaseService):
     async def __call__(self, *args: Any, title: str | None = None, **kwargs: Any) -> Any:
         params = {"page": kwargs.get("page", 1)}
         if title:
-            params["Title"] = title
+            params["title"] = title
         response = await self.http_client.get(self.base_url, params=params)
         response_data = response.json()
         results = response_data.get("data")

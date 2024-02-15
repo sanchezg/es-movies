@@ -25,14 +25,13 @@ async def index(request: Request):
 @inject
 async def get_url(
     title: str,
-    year: int,
-    # movies_lookup: MoviesLookup = Depends(Provide[Container.movies_lookup]),
-):
-    # documents = await movies_lookup(q=title, year=year)
-    # if documents:
-    #     return responses.Response(documents, status_code=status.HTTP_200_OK)
-    # raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Movies not found")
-    return responses.Response("ok", status_code=status.HTTP_200_OK)
+    year: int | None = None,
+    movies_lookup: MovieRepo = Depends(Provide[Container.movies_repo]),
+) -> Movie | list[Movie] | str:
+    documents = await movies_lookup.get(title=title, year=year)
+    if not documents:
+        return responses.Response("No results", status_code=status.HTTP_404_NOT_FOUND)  # type: ignore
+    return documents
 
 
 @router.post("/movies/fetcher/", response_model=Movie)

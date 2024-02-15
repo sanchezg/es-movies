@@ -6,7 +6,7 @@ from typing import Union
 class Movie:
     title: str
     year: int
-    imdb_id: str
+    imdbid: str
 
 
 @dataclass()
