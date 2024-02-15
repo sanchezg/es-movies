@@ -8,7 +8,7 @@ The API docs can be accessed via `/docs/` (example: `http://localhost:8000/docs/
 
 # Running instructions
 
-Since this app was implemented using Docker, the best way is to run it is with `docker-compose`:
+Since this app was implemented using Docker, the best way to run it is with `docker-compose`:
 
 `$ docker-compose -f docker/docker-compose.yml build`
 `$ docker-compose -f docker/docker-compose.yml up`
