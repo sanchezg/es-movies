@@ -14,12 +14,6 @@ templates = Jinja2Templates(directory="src/application/templates")
 
 logger = getLogger("default")
 
-@router.get("/", response_class=responses.HTMLResponse)
-@inject
-async def index(request: Request):
-    # Basic index
-    return templates.TemplateResponse("index.html", context={"request": {}})
-
 
 @router.get("/movies/")
 @inject

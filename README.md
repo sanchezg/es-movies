@@ -46,9 +46,7 @@ Having said that, the module structure looks like:
     ├── __init__.py
     ├── application
     │   ├── __init__.py
-    │   ├── controllers.py
-    │   └── templates
-    │       └── index.html
+    │   └── controllers.py
     ├── config
     ├── container.py
     ├── domain
