@@ -21,3 +21,6 @@ class ESRepo(AbstractRepo):
 
     async def insert(self, actions: list[dict], **kwargs) -> tuple[int, int | list[Any]]:
         return await async_bulk(self.es, actions, chunk_size=settings.ES_CHUNK_SIZE)
+
+    async def delete(self, index, body, **kwargs) -> None:
+        return await self.es.delete_by_query(index=index, body=body)

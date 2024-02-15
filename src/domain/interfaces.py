@@ -12,3 +12,7 @@ class AbstractRepo(abc.ABC, Generic[T]):
     @abc.abstractmethod
     async def insert(self, **kwargs) -> None:
         pass
+
+    @abc.abstractmethod
+    async def delete(self, **kwargs) -> None:
+        pass

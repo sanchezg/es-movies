@@ -52,3 +52,13 @@ class ESMovieRepo(ESRepo, MovieRepo):
         if errors:
             raise Exception(f"Failed to insert: {errors}")
         return success
+
+    async def delete(self, **kwargs) -> None:
+        body = {}
+        if kwargs.get("all"):
+            body = {"query": {"match_all": {}}}
+        elif kwargs.get("title"):
+            body = {
+                "query": {"match": {"title": kwargs["title"]}}
+            }
+        await super().delete(index=self.index_name, body=body)

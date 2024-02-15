@@ -43,6 +43,8 @@ async def post_url(
 ):
     title = data.title if data else None
     result = await movies_fetcher(title=title)
+    if result:
+        await movies_store.delete(all=True)
     count = await movies_store.insert(documents=result)
     logger.debug(f"Inserted {count} documents")
     return responses.JSONResponse(content=result, status_code=status.HTTP_200_OK)
