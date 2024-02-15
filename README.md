@@ -4,6 +4,8 @@ This app fetches movies from `https://jsonmock.hackerrank.com/api/moviesdata/sea
 
 After fetching the movies from the API, they are stored in an ElasticSearch DB.
 
+The API docs can be accessed via `/docs/` (example: `http://localhost:8000/docs/`).
+
 # Running instructions
 
 Since this app was implemented using Docker, the best way is to run it with it:
