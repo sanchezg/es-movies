@@ -19,6 +19,7 @@ httpx = "^0.26.0"
 isort = "^5.13.2"
 ipython = "^8.21.0"
 ipdb = "^0.13.13"
+pytest = "^8.0.0"
 
 [build-system]
 requires = ["poetry-core"]
