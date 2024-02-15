@@ -26,6 +26,13 @@ If you want to instead run the app locally, keep in mind you must use Python3.11
 `$ pip install poetry`
 `$ poetry install --no-root`
 
+## Tests
+
+In order to run the tests inside the container, go into it:
+
+1. `$ docker-compose -f docker/docker-compose.yml run -p8000:8000 core /bin/bash`
+2. `# pytest -sv tests/`
+
 # Design
 
 The app is designed using DDD + DI + Repository Pattern. In that way, the business logic (domain) is kept splited away from implementation details (DB chosen).
