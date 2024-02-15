@@ -34,18 +34,13 @@ class ESMovieRepo(ESRepo, MovieRepo):
         logger.debug(f"Search: {body} | Results: {results}")
         if results.get("hits", {}).get("hits", []):  # type: ignore
             return [
-                Movie(
-                    **{field.name: doc["_source"].get(field.name) for field in dataclasses.fields(Movie)}
-                )
+                Movie(**{field.name: doc["_source"].get(field.name) for field in dataclasses.fields(Movie)})
                 for doc in results["hits"]["hits"]  # type: ignore
             ]
 
     async def insert(self, **kwargs) -> int | None:
         actions = [
-            {
-                "_index": self.index_name,  # type: ignore
-                "_source": {k.lower(): v for k, v in doc.items()}
-            }
+            {"_index": self.index_name, "_source": {k.lower(): v for k, v in doc.items()}}  # type: ignore
             for doc in kwargs.get("documents", [])
         ]
         success, errors = await super().insert(actions=actions)
@@ -58,7 +53,5 @@ class ESMovieRepo(ESRepo, MovieRepo):
         if kwargs.get("all"):
             body = {"query": {"match_all": {}}}
         elif kwargs.get("title"):
-            body = {
-                "query": {"match": {"title": kwargs["title"]}}
-            }
+            body = {"query": {"match": {"title": kwargs["title"]}}}
         await super().delete(index=self.index_name, body=body)

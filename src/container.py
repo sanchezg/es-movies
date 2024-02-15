@@ -1,5 +1,4 @@
 from dependency_injector import containers, providers
-
 from elasticsearch import AsyncElasticsearch
 
 from src import settings

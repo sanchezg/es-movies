@@ -1,9 +1,9 @@
 from typing import Any, Optional
 
+from elasticsearch.helpers import async_bulk
+
 from src import settings
 from src.domain.interfaces import AbstractRepo
-
-from elasticsearch.helpers import async_bulk
 
 
 class ESRepo(AbstractRepo):

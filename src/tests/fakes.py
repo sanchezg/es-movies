@@ -20,6 +20,7 @@ class MockESMovieRepo(ESMovieRepo):
                 "imdbid": "tt0242653",
             },
         ]
+
     async def get(self, title: str | None = None, year: int | None = None, **kwargs) -> list[dict] | None:
         return self._documents if title and "matrix" in title else []
 

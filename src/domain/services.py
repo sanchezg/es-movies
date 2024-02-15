@@ -1,7 +1,7 @@
 import asyncio
 import logging
-from itertools import chain
 from functools import wraps
+from itertools import chain
 from typing import Any
 
 from httpx import AsyncClient, HTTPError
@@ -10,6 +10,7 @@ logger = logging.getLogger("default")
 
 
 def retry_async(max_attempts=3, delay=1, backoff=2):
+    # A really simple retry decorator for async functions
     def wrapper(func):
         @wraps(func)
         async def wrapped(*args, **kwargs):
@@ -19,10 +20,12 @@ def retry_async(max_attempts=3, delay=1, backoff=2):
                     return await func(*args, **kwargs)
                 except HTTPError as e:
                     logger.warning(f"Attempt {attempts+1} failed: {e}")
-                    await asyncio.sleep(delay * (backoff ** attempts))
+                    await asyncio.sleep(delay * (backoff**attempts))
                     attempts += 1
             raise Exception(f"Failed after {max_attempts} attempts")
+
         return wrapped
+
     return wrapper
 
 
@@ -73,5 +76,5 @@ class MoviesFetcher(BaseService):
                 tasks.append(self.fetch(params={"Title": title, "page": page}))
             additional_results = await asyncio.gather(*tasks)
             results.extend(chain(*additional_results))
-        await self.close_client()
+        await self.close_client()  # Keeping the same session open for all requests so we avoid extra overhead
         return results

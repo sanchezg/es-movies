@@ -8,7 +8,7 @@ The API docs can be accessed via `/docs/` (example: `http://localhost:8000/docs/
 
 # Running instructions
 
-Since this app was implemented using Docker, the best way is to run it with it:
+Since this app was implemented using Docker, the best way is to run it is with `docker-compose`:
 
 `$ docker-compose -f docker/docker-compose.yml build`
 `$ docker-compose -f docker/docker-compose.yml up`
@@ -19,6 +19,13 @@ There are a few environment variables that can be set using an `.env.local` file
 ES_URI
 ES_CHUNK_SIZE
 ES_MAX_SIZE
+```
+
+An additional env file that is useful for development  / debugging is `DEBUG`, when set, you'll see additional logs in stdout:
+
+```
+docker-core-1   | DEBUG:    2024-02-15 12:18:03 Request: http://localhost:8000/movies/?title=the%20sin | Method: GET | Path: /movies/ | Query: title=the+sin | Body: b''
+docker-core-1   | DEBUG:    2024-02-15 12:18:03 Search: {'query': {'match': {'title': 'the sin'}}, 'size': 1000} | Results: {'took': 2, 'timed_out': False, '_shards': {'total': 1, 'successful': 1, 'skipped': 0, 'failed': 0}, 'hits': {'total': {'value': 3, 'relation': 'eq'}, 'max_score': 1.0235652, 'hits': [{'_index': 'movies', '_id': 'larlqo0Bp0m0TdTxmcUP', '_score': 1.0235652, '_source': {'title': "The Making of 'Waterworld'", 'year': 1995, 'imdbid': 'tt2670548'}}, {'_index': 'movies', '_id': 'lqrlqo0Bp0m0TdTxmcUP', '_score': 0.82818687, '_source': {'title': 'Waterworld 4: History of the Islands', 'year': 1997, 'imdbid': 'tt0161077'}}, {'_index': 'movies', '_id': 'm6rlqo0Bp0m0TdTxmcUP', '_score': 0.64384186, '_source': {'title': 'Fighting, Flying and Driving: The Stunts of Spiderman 3', 'year': 2007, 'imdbid': 'tt1132238'}}]}}
 ```
 
 If you want to instead run the app locally, keep in mind you must use Python3.11+, and then install the dependencies with poetry:
@@ -90,3 +97,9 @@ Query params: `title`, `year`
 
 Searches the local ES DB for the movies wanted. If no params are provided, all results are returned.
 
+# Technical debt & next steps
+
+- More tests: right now the coverage is pretty low, add more unit tests.
+- Move some logic from `ESMovieRepo` to the actual `ESRepo` in order to uncouple even more the specific repo implementation from ES code.
+- Have some ES/data model to map the existing data models to ES mappings, and convert _automatically_ from python code to ES documents and viceversa (`elasticsearch_dsl.Document` is a good choice, or enhance the `dataclasses` with conversion and mapping methods).
+- If the repo start having more logic needed: create different services accessing it and doing all the necessary logic to interact with the repo.

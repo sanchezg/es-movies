@@ -14,6 +14,7 @@ dotenv_path = BASE_DIR + "/config/.env." + env
 load_dotenv(dotenv_path=dotenv_path)
 
 BASE_URL = os.environ.get("BASE_URL")
+DEBUG = os.environ.get("DEBUG")
 
 IS_PROD_ENV = env == "prod"
 IS_LOCAL_ENV = env == "local"
@@ -31,7 +32,6 @@ LOGGING_CONFIG = {
             "()": "uvicorn.logging.DefaultFormatter",
             "fmt": "%(levelprefix)s %(asctime)s %(message)s",
             "datefmt": "%Y-%m-%d %H:%M:%S",
-
         },
     },
     "handlers": {
@@ -42,6 +42,6 @@ LOGGING_CONFIG = {
         },
     },
     "loggers": {
-        "default": {"handlers": ["default"], "level": "DEBUG"},
+        "default": {"handlers": ["default"], "level": "DEBUG" if DEBUG else "INFO"},
     },
 }

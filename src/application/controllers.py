@@ -1,3 +1,5 @@
+from logging import getLogger
+
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, Request, responses, status
 from fastapi.templating import Jinja2Templates
@@ -5,8 +7,6 @@ from fastapi.templating import Jinja2Templates
 from src.container import Container
 from src.domain.model import Movie, MovieQuery
 from src.domain.repository import MovieRepo
-from logging import getLogger
-
 from src.domain.services import MoviesFetcher
 
 router = APIRouter()
