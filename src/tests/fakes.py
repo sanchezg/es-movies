@@ -1,5 +1,4 @@
 from src.infra.repositories.movies import ESMovieRepo
-from src.domain.services import MoviesFetcher
 
 
 class MockESMovieRepo(ESMovieRepo):
@@ -22,7 +21,7 @@ class MockESMovieRepo(ESMovieRepo):
             },
         ]
     async def get(self, title: str | None = None, year: int | None = None, **kwargs) -> list[dict] | None:
-        return self._documents
+        return self._documents if title and "matrix" in title else []
 
     async def insert(self, **kwargs) -> int | None:
         self._documents.extend(kwargs.get("documents", []))
@@ -32,7 +31,7 @@ class MockESMovieRepo(ESMovieRepo):
         pass
 
 
-class MockMoviesFetcher(MoviesFetcher):
+class MockMoviesFetcher:
     async def __call__(self, *args, title: str | None = None, **kwargs) -> list[dict]:
         return [
             {
