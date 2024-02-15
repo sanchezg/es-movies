@@ -6,7 +6,6 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile
-    entrypoint: ./docker/runner.sh
     volumes:
       - ../:/code
     ports:
